@@ -1,21 +1,20 @@
 package pro.sky.homework25.controller;
 
-import pro.sky.homework25.object.Employee;
-import pro.sky.homework25.exeption.DepartmentSearchException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pro.sky.homework25.service.DepartmentService;
+import pro.sky.homework25.exeption.DepartmentSearchException;
+import pro.sky.homework25.object.Employee;
+import pro.sky.homework25.service.DepartmentServiceImp;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(path = "/department")
+@RequestMapping(path = "department")
 public class DepartmentController {
-    private final DepartmentService departmentService;
+    private final DepartmentServiceImp departmentService;
 
-    public DepartmentController(DepartmentService departmentService) {
+    public DepartmentController(DepartmentServiceImp departmentService) {
         this.departmentService = departmentService;
     }
 
@@ -25,17 +24,17 @@ public class DepartmentController {
         return String.format("%s %s", HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 
-    @GetMapping(path = "/max-salary")
+    @GetMapping(path = "max-salary")
     public Employee maxSalary(@RequestParam Integer departmentId) {
         return departmentService.getEmployeeWithMaxSalary(departmentId);
     }
 
-    @GetMapping(path = "/min-salary")
+    @GetMapping(path = "min-salary")
     public Employee minSalary(@RequestParam Integer departmentId) {
         return departmentService.getEmployeeWithMinSalary(departmentId);
     }
 
-    @GetMapping(path = "/dep-all")
+    @GetMapping(path = "dep-all")
     public Map<String, List<Employee>> allByDepartmentId(@RequestParam(required = false) Integer departmentId) {
         return departmentService.getAll(departmentId);
     }
