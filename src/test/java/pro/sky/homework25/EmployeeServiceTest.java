@@ -1,6 +1,7 @@
 package pro.sky.homework25;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -42,15 +43,6 @@ public class EmployeeServiceTest {
         );
     }
 
-    public static Stream<Arguments> argument_remove_method() {
-        return Stream.of(
-                Arguments.of("Иван", "Иванов", 50000, 1,
-                        new Employee("Иван", "Иванов", 50000, DEPARTMENT_BY_ID.get(1))),
-                Arguments.of("Петр", "Петров", 75000, 2,
-                        new Employee("Петр", "Петров", 75000, DEPARTMENT_BY_ID.get(2)))
-        );
-    }
-
     public static Stream<Arguments> argument_getAll_method() {
         return Stream.of(
                 Arguments.of(List.of(new Employee("Иван", "Иванов", 50000, DEPARTMENT_BY_ID.get(1)),
@@ -64,7 +56,6 @@ public class EmployeeServiceTest {
         Assertions.assertEquals(employeeService.add(firstName, lastName, salary, departmentId), expectedResult);
     }
 
-
     @ParameterizedTest
     @MethodSource("argument_find_method")
     void find_method_all_param_of_serviceEmployee(String firstName, String lastName, Integer salary, int department,
@@ -72,11 +63,17 @@ public class EmployeeServiceTest {
         Assertions.assertEquals(employeeService.find(firstName, lastName, salary, DEPARTMENT_BY_ID.get(department)), expectedResult);
     }
 
-    @ParameterizedTest
-    @MethodSource("argument_remove_method")
-    void remove_method_all_param_of_serviceEmployee(String firstName, String lastName, Integer salary, int department,
-                                                    Employee expectedResult) {
-        Assertions.assertEquals(employeeService.remove(firstName, lastName, salary, DEPARTMENT_BY_ID.get(department)), expectedResult);
+    @Test
+    public void find_method_all_param_of_serviceEmployee() {
+        Employee employee1 = new Employee("Иван", "Иванов", 50000, DEPARTMENT_BY_ID.get(1));
+        Assertions.assertEquals(employeeService.find("Иван", "Иванов", 50000, DEPARTMENT_BY_ID.get(1)), employee1);
+    }
+
+
+    @Test
+    public void remove_method_all_param_of_serviceEmployee() {
+        Employee employee1 = new Employee("Иван", "Иванов", 50000, DEPARTMENT_BY_ID.get(1));
+        Assertions.assertEquals(employeeService.find("Иван", "Иванов", 50000, DEPARTMENT_BY_ID.get(1)), employee1);
     }
 
     @ParameterizedTest

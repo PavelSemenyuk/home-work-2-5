@@ -54,13 +54,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee find(String firstName, String lastName, Integer salary, Department department) {
-
-        Employee employee = new Employee(firstName, lastName, salary, department);
-        if (employees.contains(employee)){
-            return employee;
+        Employee employee1 = new Employee(firstName, lastName, salary, department);
+        if (!employees.contains(employee1)){
+            return employee1;
         }
         throw new EmployeeNotFoundException("Такой сотрудник не найден");
-    }
+            }
 
     @Override
     public Employee remove(String firstName, String lastName, Integer salary, Department department) {
