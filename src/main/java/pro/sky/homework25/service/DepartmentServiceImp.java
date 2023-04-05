@@ -4,11 +4,10 @@ import org.springframework.stereotype.Service;
 import pro.sky.homework25.exeption.DepartmentSearchException;
 import pro.sky.homework25.object.Employee;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static pro.sky.homework25.object.Department.DEPARTMENT_BY_ID;
 
 @Service
 public class DepartmentServiceImp implements DepartmentService {
@@ -33,15 +32,41 @@ public class DepartmentServiceImp implements DepartmentService {
                 .max(Comparator.comparing(Employee::getSalary))
                 .orElseThrow(() -> new DepartmentSearchException("Департамент не найден"));
     }
-    @Override
-    public Map<String, List<Employee>> getAll(Integer departmentId) {
 
-        return employeeService.getAll().stream()
-                .filter(employee -> departmentId == null || Objects.equals(employee.getDepartment().getId(), departmentId))
-                .collect(Collectors.groupingBy(
-                        employee -> employee.getDepartment().getName(),
-                        Collectors.mapping(employee -> employee, Collectors.toList())));
+    @Override
+    public Map<String, List<Employee>> getOneDepartment(Integer departmentId) {
+            if(departmentId > DEPARTMENT_BY_ID.size()){
+                throw new DepartmentSearchException("Департамент не найден");
+            }
+            return employeeService.getAll().stream()
+                    .collect(Collectors.groupingBy(
+                            employee -> employee.getDepartment().getName(),
+                            Collectors.mapping(e -> e, Collectors.toList()))
+                    );
     }
+
+    @Override
+    public Integer sumSalaryOfDepartment(int departmentId) {
+        List<Integer> sumSalary = employeeService.getAll().stream()
+                .filter(employee -> employee.getDepartment().getId() == departmentId)
+                .map(employee -> employee.getSalary())
+                .collect(Collectors.toList());
+        return sumSalary.stream()
+                .reduce(0, Integer::sum);
+    }
+
+    @Override
+        public Map<Integer, List<Employee>> getAll() {
+            Map<Integer, List<Employee>> employeeSortedMap = new HashMap<>();
+                for (int i = 1; i < DEPARTMENT_BY_ID.size()+1; i++) {
+                    final int s = i;
+                    employeeSortedMap.put(i, employeeService.getAll().stream()
+                            .filter(employee -> employee.getDepartment().getId() == s)
+                            .collect(Collectors.toList())
+                    );
+                }
+                return employeeSortedMap;
+            }
 
 }
 

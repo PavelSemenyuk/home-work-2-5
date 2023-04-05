@@ -24,19 +24,30 @@ public class DepartmentController {
         return String.format("%s %s", HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 
-    @GetMapping(path = "max-salary")
-    public Employee maxSalary(@RequestParam Integer departmentId) {
+    @GetMapping(path = "/{id}/salary/max")
+    public Employee maxSalary(@PathVariable("id") Integer departmentId) {
         return departmentService.getEmployeeWithMaxSalary(departmentId);
     }
 
-    @GetMapping(path = "min-salary")
-    public Employee minSalary(@RequestParam Integer departmentId) {
+    @GetMapping(path = "/{id}/salary/min")
+    public Employee minSalary(@PathVariable("id") Integer departmentId) {
         return departmentService.getEmployeeWithMinSalary(departmentId);
     }
 
-    @GetMapping(path = "dep-all")
+
+    @GetMapping(path = "/{id}/salary/sum")
+    public Integer sumSalary(@PathVariable("id") Integer departmentId){
+        return departmentService.sumSalaryOfDepartment(departmentId);
+    }
+
+    @GetMapping(path = "/all")
     public Map<String, List<Employee>> allByDepartmentId(@RequestParam(required = false) Integer departmentId) {
-        return departmentService.getAll(departmentId);
+        return departmentService.getOneDepartment(departmentId);
+    }
+
+    @GetMapping(path = "/employees")
+    public Map<Integer,List<Employee>> allByDepartmentId() {
+        return departmentService.getAll();
     }
 }
 

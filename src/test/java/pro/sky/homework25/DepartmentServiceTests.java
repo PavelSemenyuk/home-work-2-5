@@ -103,41 +103,32 @@ public class DepartmentServiceTests {
     }
 
     @Test
-    void getAll_success() {
+    void getAllDepartment_success() {
         Integer departmentId = 1;
+
 
         List<Employee> employees = new ArrayList<>();
         Employee accounting1 = new Employee("Ольга", "Иванова", 10700, DEPARTMENT_BY_ID.get(1));
         Employee accounting2 = new Employee("Иван", "Олегов", 10200, DEPARTMENT_BY_ID.get(1));
 
-        Employee resourcesDepartment1 = new Employee("Петр", "Елкин", 200, DEPARTMENT_BY_ID.get(2));
-        Employee resourcesDepartment2 = new Employee("Алексей", "Снигирь", 10211, DEPARTMENT_BY_ID.get(2));
-        Employee resourcesDepartment3 = new Employee("Мария", "Петрова", 99999, DEPARTMENT_BY_ID.get(2));
 
-        Employee marketing1 = new Employee("Геннадий", "Хелпов", 9900, DEPARTMENT_BY_ID.get(3));
-        Employee marketing2 = new Employee("Мария", "Сапортова", 9900, DEPARTMENT_BY_ID.get(3));
-        Employee marketing3 = new Employee("Евгений", "Зинин", 9900, DEPARTMENT_BY_ID.get(3));
-        Employee marketing4 = new Employee("Олеся", "Черненко", 9900, DEPARTMENT_BY_ID.get(3));
 
         employees.add(accounting1);
         employees.add(accounting2);
-        employees.add(resourcesDepartment1);
-        employees.add(resourcesDepartment2);
-        employees.add(resourcesDepartment3);
-        employees.add(marketing1);
-        employees.add(marketing2);
-        employees.add(marketing3);
-        employees.add(marketing4);
+
 
         //подготовка ожидаемого результата
+
+
         when(employeeService.getAll()).thenReturn(employees);
-        Map<String, List<Employee>> expectedResult = new HashMap<>();
-        String departmentName = DEPARTMENT_BY_ID.get(departmentId).getName();
-        expectedResult.put(departmentName, List.of(accounting1, accounting2));
+        Map<Integer, List<Employee>> expectedResultMap = new HashMap<>();
+        expectedResultMap.put(departmentId, List.of(accounting1, accounting2));
+
+        Map<String, List<Employee>> expectedResult = Map.of("Бухгалтерия", List.of(accounting1, accounting2) );
 
         //Начало теста
-        Map<String, List<Employee>> actualResult = departmentService.getAll(departmentId);
-        assertEquals(expectedResult, actualResult);
+
+        assertEquals(departmentService.getOneDepartment(departmentId), expectedResult);
     }
 
     @Test
@@ -174,7 +165,7 @@ public class DepartmentServiceTests {
         expectedResult.put("Маркетинг", List.of(marketing1, marketing2, marketing3, marketing4));
 
         //Начало теста
-        Map<String, List<Employee>> actualResult = departmentService.getAll(null);
+        Map<String, List<Employee>> actualResult = departmentService.getOneDepartment(1);
         assertEquals(expectedResult, actualResult);
     }
 
@@ -187,7 +178,7 @@ public class DepartmentServiceTests {
         when(employeeService.getAll()).thenReturn(Collections.emptyList());
 
         //Начало теста
-        Map<String, List<Employee>> actualResult = departmentService.getAll(departmentId);
+        Map<String, List<Employee>> actualResult = departmentService.getOneDepartment(departmentId);
         assertTrue(actualResult.isEmpty());
     }
 

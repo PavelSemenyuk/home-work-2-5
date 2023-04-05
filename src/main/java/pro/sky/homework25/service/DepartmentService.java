@@ -10,5 +10,10 @@ public interface DepartmentService {
 
     Employee getEmployeeWithMaxSalary(Integer departmentId);
 
-    Map<String, List<Employee>> getAll(Integer departmentId);
+    Map<String, List<Employee>> getOneDepartment(Integer departmentId);
+    Integer sumSalaryOfDepartment(int departmentId);
+    Map<Integer, List<Employee>> getAll();
+
+
+
 }
