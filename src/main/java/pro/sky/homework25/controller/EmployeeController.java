@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import pro.sky.homework25.service.EmployeeService;
+import pro.sky.homework25.service.EmployeeServiceImpl;
 
 import java.util.Collection;
 
 
 @RestController
-@RequestMapping("/employee")
+@RequestMapping("employee")
 public class EmployeeController {
 
 
@@ -46,40 +46,40 @@ public class EmployeeController {
         return String.format("%s EmployeeNotFoundException %s", HttpStatus.NOT_FOUND.value(), e.getMessage());
     }
 
-    private final EmployeeService employeeService;
+    private final EmployeeServiceImpl employeeService;
 
     @Autowired
-    public EmployeeController(EmployeeService employeeService) {
+    public EmployeeController(EmployeeServiceImpl employeeService) {
         this.employeeService = employeeService;
     }
 
-    @GetMapping(path = "/add")
+    @GetMapping(path = "add")
     public Employee addEmployee(@RequestParam(name = "firstName") String firstName,
                                 @RequestParam(name = "lastName") String lastName,
-                                @RequestParam(name = "salary") String salary,
+                                @RequestParam(name = "salary") Integer salary,
                                 @RequestParam(name = "departmentId") int departmentId)
     {
         return employeeService.add(firstName, lastName, salary, departmentId);
     }
 
-    @GetMapping(path = "/find")
+    @GetMapping(path = "find")
     public Employee findEmployee(@RequestParam String firstName,
                                  @RequestParam String lastName,
-                                 @RequestParam String salary,
+                                 @RequestParam Integer salary,
                                  @RequestParam Department department)
     {
         return employeeService.find(firstName, lastName,salary,department);
     }
 
-    @GetMapping(path = "/remove")
+    @GetMapping(path = "remove")
     public Employee removeEmployee(@RequestParam String firstName,
                                    @RequestParam String lastName,
-                                   @RequestParam String salary,
+                                   @RequestParam Integer salary,
                                    @RequestParam Department department) {
         return employeeService.remove(firstName, lastName,salary,department);
     }
 
-    @GetMapping(path = "/findAll")
+    @GetMapping(path = "findAll")
     public Collection<Employee> getEmployees() {
         return employeeService.getAll();
     }

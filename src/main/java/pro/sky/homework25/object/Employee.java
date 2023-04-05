@@ -6,11 +6,11 @@ public class Employee {
 
     private final String firstName;
     private final String lastName;
-    private final String salary;
+    private final Integer salary;
     private final Department department;
 
 
-    public Employee(String firstName, String lastName, String salary, Department department) {
+    public Employee(String firstName, String lastName, Integer salary, Department department) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.salary = salary;
@@ -30,7 +30,7 @@ public class Employee {
         return firstName + "  " + lastName;
     }
 
-    public String getSalary() {
+    public Integer getSalary() {
         return salary;
     }
 
@@ -45,6 +45,16 @@ public class Employee {
         Employee employee = (Employee) o;
         return Objects.equals(firstName, employee.firstName) && Objects.equals(lastName, employee.lastName)
                 && Objects.equals(salary, employee.salary) && Objects.equals(department, employee.department);
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", salary=" + salary +
+                ", department=" + department +
+                '}';
     }
 
     @Override
